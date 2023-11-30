@@ -1,0 +1,67 @@
+# @format
+
+openapi: "3.0.2"
+info:
+  title: Wallet budget api
+  version: "1.0"
+  description: this is an api speculation about the application wallet budget
+servers:
+  - url: https://WalletBudget.com
+paths:
+  /Account:
+    get:
+      tags:
+        - "user"
+      summary: Retrieve all account 
+      description: A list of account
+
+
+      responses:
+      
+        200:
+          description: A list of accounts
+          content:
+            application/json:
+               schema:
+                  type: object
+                  items:
+                   $ref: "#/components/schemas/Account"
+
+components:
+  schemas:
+    Account:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/UserAccount"
+        - type: object
+  
+    Transaction:
+        type: object
+        properties:
+          id:
+           type: integer
+          description: 
+           type: string
+          amount:
+           type: integer
+          currency:
+            type: string
+          accountId:
+            type: integer
+          account: 
+            $ref: "#/components/schemas/Account"
+
+
+
+    UserAccount:
+      type: object
+      properties:
+        id:
+         type: integer
+        name:
+         type: string
+        balance:
+         type: integer
+        currency:
+         type: string
+        
