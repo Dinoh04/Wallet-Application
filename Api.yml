@@ -22,11 +22,81 @@ paths:
           content:
             application/json:
                schema:
-                  type: object
+                  type: array
                   items:
                    $ref: "#/components/schemas/Account"
-                   example:
-                  
+                   
+    post:
+      tags:
+        - "Accounts"
+      summary: Create a new account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Account"
+      responses:
+        '201':
+          description: Account created successfully
+        '400':
+          description: Bad request
+
+
+  /accounts/{accountId}:
+    
+    parameters:
+      - name: accountId
+        in: path
+        required: true
+        description: ID of the account
+        schema:
+          type: integer
+    get:
+      tags:
+        - "Accounts"
+      summary: Retrieve account details by id
+      responses:
+        '200':
+          description: Account details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+        '404':
+          description: Account not found
+    put:
+      tags:
+        - "Accounts"
+      summary: Update account details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Account"
+      responses:
+        '200':
+          description: Account updated successfully
+        '404':
+          description: Account not found
+        '400':
+          description: Bad request
+
+    delete:
+      tags:
+        - "Accounts"
+      summary: Delete an account by id
+      responses:
+        '204':
+          description: Account deleted successfully
+        '404':
+          description: Account not found
+
+
+
+
+
 
 components:
   schemas:
@@ -56,5 +126,15 @@ components:
 
     UserAccount:
       type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        balance:
+          type: number
+          format: float
+        currency:
+          type: string
       
         
