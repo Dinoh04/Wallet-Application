@@ -94,7 +94,83 @@ paths:
           description: Account not found
 
 
+  /transactions:
+    get:
+      tags:
+        - "Transactions"
+      summary: Retrieve all transactions
+      responses:
+        '200':
+          description: A list of transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
+    post:
+      tags:
+        - "Transactions"
+      summary: Create a new transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Transaction"
+      responses:
+        '201':
+          description: Transaction created successfully
+        '400':
+          description: Bad request
 
+  /transactions/{transactionId}:
+    parameters:
+      - name: transactionId
+        in: path
+        required: true
+        description: ID of the transaction
+        schema:
+          type: integer
+    get:
+      tags:
+        - "Transactions"
+      summary: Retrieve transaction details by id
+      responses:
+        '200':
+          description: Transaction details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+        '404':
+          description: Transaction not found
+    put:
+      tags:
+        - "Transactions"
+      summary: Update transaction details by id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Transaction"
+      responses:
+        '200':
+          description: Transaction updated successfully
+        '404':
+          description: Transaction not found
+        '400':
+          description: Bad request
+    delete:
+      tags:
+        - "Transactions"
+      summary: Delete a transaction by id
+      responses:
+        '204':
+          description: Transaction deleted successfully
+        '404':
+          description: Transaction not found
 
 
 
