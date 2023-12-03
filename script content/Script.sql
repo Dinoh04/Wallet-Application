@@ -22,4 +22,5 @@ create table if not exists transaction(
     description varchar(250),
     amount float not null,
     transaction_type Transaction_type
+    id_accounts int REFERENCES acccounts(id_accounts)
 );
