@@ -42,7 +42,7 @@ public class transactionCrudOperators implements CrudOperations <Transaction>{
     @Override
     public List<Transaction> saveAll(List<Transaction> toSave) throws SQLException {
         String sql = "INSERT INTO transaction (id_transaction, description, amount, transaction_type, id_accounts) VALUES (?, ?, ?, ?, ?) " +
-                "ON CONFLICT (id_transaction) DO NOTHING";
+                "ON CONFLICT (description,amount,transaction_type,id_accounts) DO NOTHING";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             for (Transaction transaction : toSave) {
                 preparedStatement.setInt(1, transaction.getId_transaction());
@@ -65,12 +65,35 @@ public class transactionCrudOperators implements CrudOperations <Transaction>{
     }
 
     @Override
-    public Transaction update(Transaction ToUpdate) throws SQLException {
-        return null;
+    public List<Transaction> update(List<Transaction> toUpdate) throws SQLException {
+        String sql = "UPDATE transaction SET description = ?, amount = ?, transaction_type = ?, id_accounts = ? WHERE id_transaction = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            for (Transaction transaction : toUpdate) {
+                preparedStatement.setString(1, transaction.getDescription());
+                preparedStatement.setDouble(2, transaction.getAmount());
+                preparedStatement.setString(3, transaction.getTransactionType().name());
+                preparedStatement.setInt(4, transaction.getId_accounts());
+                preparedStatement.setInt(5, transaction.getId_transaction());
+
+                preparedStatement.addBatch();
+            }
+
+
+            preparedStatement.executeBatch();
+        }
+        return toUpdate;
     }
+
+
+
 
     @Override
     public Transaction delete(Transaction toDelete) throws SQLException {
-        return null;
+        String sql = "DELETE FROM Transaction  WHERE id_transaction = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, toDelete.getId_transaction());
+            preparedStatement.executeUpdate();
+        }
+        return toDelete;
     }
 }
