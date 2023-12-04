@@ -9,7 +9,7 @@ create table if not exists currency(
     CONSTRAINT unique_currency_name_symbole UNIQUE (currency_name, currency_symbole)
 );
 
-create table  if not exists acccounts(
+create table  if not exists accounts(
     id_accounts serial primary key,
     accounts_name varchar(250) not null,
     accounts_balance float default 0 not null,
@@ -23,7 +23,7 @@ create table if not exists transaction(
     id_transaction serial primary key,
     description varchar(250),
     amount float not null,
-    transaction_type Transaction_type
-    id_accounts int REFERENCES acccounts(id_accounts),
-    constraint unique_transaction unique (description,amount,transaction_type,id_accounts);
+    transaction_type Transaction_type,
+    id_accounts int REFERENCES accounts(id_accounts),
+    constraint unique_transaction unique (description,amount,transaction_type,id_accounts)
 );
