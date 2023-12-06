@@ -16,7 +16,7 @@ create table  if not exists Accounts(
     lastUpdate Timestamp default Current_Timestamp,
     idCurrency int REFERENCES Currency(idCurrency),
     accountType AccountType,
-    CONSTRAINT uniqueAccounts UNIQUE (AccountsName,lastUpdate ,idCurrency,AccountType)
+    CONSTRAINT uniqueAccounts UNIQUE (AccountsName,accountsBalance,idCurrency,AccountType)
 );
 
 create TYPE  TransactionType AS ENUM ('Debit','Credit');
