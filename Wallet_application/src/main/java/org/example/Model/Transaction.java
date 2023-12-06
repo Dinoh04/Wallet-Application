@@ -1,18 +1,21 @@
 package org.example.Model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import org.example.transaction_type;
+import lombok.*;
+import org.example.transactionType;
+
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 public class Transaction {
 
-    private int id_transaction;
-    private String description;
-    private float amount;
-    private transaction_type transactionType;
-    private int id_accounts;
+    private int idTransaction;
+    private String label;
+    private Double amount;
+    private LocalDateTime transactionDate;
+    private transactionType TransactionType;
+    private int idAccounts;
 }
