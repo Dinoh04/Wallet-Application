@@ -1,0 +1,34 @@
+currency {
+    id 
+    name 
+    code 
+     enum : EUR , MGA
+}
+account  {
+    id
+    name 
+    type
+      enum : Mobile, bank, cash currency obj array 
+      balance: double 
+      date ; 
+}
+
+transaction {
+    id 
+     label 
+     amount 
+     date
+     type : Debit ou crédit 
+
+}
+
+create table currency value (
+    id
+    id_value 1
+    id_value2 
+    valeur 
+    date  
+)
+
+transfert entre deux compte 
+ 
