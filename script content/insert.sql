@@ -1,8 +1,8 @@
--- currency table  insert
-INSERT INTO currency (currency_name, currency_symbole) VALUES ('Ariary', 'AR'),('Franc Malgache', 'FMG'),('Euro', '€ '),('Dollar', '$') ON CONFLICT (currency_name,currency_symbole) DO NOTHING;
+-- Currency table insert
+INSERT INTO Currency (currencyName, currencyCode) VALUES ('Ariary', 'AR'), ('Euro', 'EUR'), ('Euro', 'EUR'), ('Ariary', 'AR') ON CONFLICT (currencyName, currencyCode) DO NOTHING;
 
--- acccounts table insert
-INSERT INTO accounts (accounts_name, accounts_balance, id_currency) VALUES ('Witting Inc', 1061629, 1),('Homenick Inc', 6735773, 2),('Oberbrunner, Boyer and Rath', 3072552, 3),('Runte, Koepp and Reinger', 148743, 4) ON CONFLICT (accounts_name, id_currency) DO NOTHING;
+-- Accounts table insert
+INSERT INTO Accounts (accountsName, accountsBalance, lastUpdate, idCurrency, accountType) VALUES ('compte courant', 1061629, CURRENT_TIMESTAMP, 1, 'Bank'),('compte épargne', 6735773, CURRENT_TIMESTAMP, 2, 'Cash'),('compte courant', 3072552, CURRENT_TIMESTAMP, 2, 'Mobile money'),('compte épargne', 148743, CURRENT_TIMESTAMP, 1, 'Bank') ON CONFLICT (AccountsName,accountsBalance,idCurrency,AccountType) DO NOTHING;
 
--- transaction table insert 
-INSERT INTO transaction (description, amount, transaction_type, id_accounts) VALUES ('Expense 1', 50.25, 'expenses', 1),('Recipe 1', 100.50, 'recipes', 2),('Transfer 1', 75.00, 'to transfer', 1),('Expense 2', 30.75, 'expenses', 3) ON CONFLICT (description,amount,transaction_type,id_accounts) DO NOTHING;
+-- Transaction table insert
+INSERT INTO Transaction (label, amount, transactionDate, transactionType, idAccounts) VALUES ('Expense 1', 50.25, CURRENT_TIMESTAMP, 'Debit', 1),('Recipe 1', 100.50, CURRENT_TIMESTAMP, 'Credit', 2),('Expense 2', 30.75, CURRENT_TIMESTAMP, 'Debit', 3),('Recipe 2', 75.00, CURRENT_TIMESTAMP, 'Credit', 1) ON CONFLICT (label,amount,transactionDate,transactionType,idAccounts) DO NOTHING;
