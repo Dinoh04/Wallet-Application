@@ -1,9 +1,9 @@
 package org.example.Model;
 
 import lombok.*;
-import org.example.Repository.accountType;
+import org.example.accountType;;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @Getter
@@ -14,7 +14,7 @@ public class AccountsModel {
     private int idAccounts;
     private String accountsName;
     private Double accountsBalance;
-    private LocalDateTime lastUpdate;
+    private LocalDate lastUpdate;
     private  int idCurrency;
     private accountType AccountType;
 }

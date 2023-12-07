@@ -1,6 +1,4 @@
-package org.example.Repository;
-
-import org.example.Model.Transaction;
+package org.example.DAO;
 
 import java.sql.SQLException;
 import java.util.List;
