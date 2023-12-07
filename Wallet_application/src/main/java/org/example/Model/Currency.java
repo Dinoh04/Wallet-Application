@@ -8,7 +8,7 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 public class Currency {
-    private  int id_currency;
-    private String currency_name;
-    private  String currency_symbole;
+    private  int idCurrency;
+    private String currencyName;
+    private  String currencyCode;
 }

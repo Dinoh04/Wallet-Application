@@ -1,6 +1,9 @@
 package org.example.Model;
 
 import lombok.*;
+import org.example.accountType;;
+
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @Getter
@@ -8,8 +11,10 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 public class AccountsModel {
-    private int id_accounts;
-    private String accounts_name;
-    private Floatx accounts_balance;
-    private  int id_currency;
+    private int idAccounts;
+    private String accountsName;
+    private Double accountsBalance;
+    private LocalDate lastUpdate;
+    private  int idCurrency;
+    private accountType AccountType;
 }
