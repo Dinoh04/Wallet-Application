@@ -11,10 +11,8 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 @ToString
 public class AccountsModel {
-    private int idAccounts;
-    private String accountsName;
-    private Double accountsBalance;
-    private LocalDate lastUpdate;
-    private  int idCurrency;
-    private accountType AccountType;
+    private int id_accounts;
+    private String accounts_name;
+    private Float accounts_balance;
+    private  int id_currency;
 }
