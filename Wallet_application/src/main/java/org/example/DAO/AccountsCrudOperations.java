@@ -31,8 +31,7 @@ public class AccountsCrudOperations implements CrudOperations <AccountsModel>{
                         resultSet.getDouble("accountsBalance"),
                         resultSet.getDate("lastUpdate").toLocalDate(),
                         resultSet.getInt("idCurrency"),
-                        accountType.valueOf(resultSet.getString("AccountType")),
-                        (List<Transaction>) resultSet.getObject("transactions")
+                        accountType.valueOf(resultSet.getString("AccountType"))
                 ));
             }
         }
@@ -100,7 +99,6 @@ public class AccountsCrudOperations implements CrudOperations <AccountsModel>{
             updatedBalance = account.getAccountsBalance() - transaction.getAmount();
         }
 
-        account.getTransactions().add(transaction);
 
         account.setAccountsBalance(updatedBalance);
 
