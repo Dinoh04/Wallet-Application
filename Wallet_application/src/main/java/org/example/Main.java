@@ -25,12 +25,13 @@ public class Main {
                 AccountsModel account = new AccountsModel(1,"Alpha",1000.00,LocalDate.now(),1, accountType.Cash);
                 accountsCrudOperations.save(account);
 
-
-                List<AccountsModel> accountsList = accountsCrudOperations.findAll();
-                account = accountsList.get(0);
                 Transaction transaction = new Transaction(1, "Achat en ligne", 50.0, LocalDate.now(), transactionType.Debit, 1);
 
-                AccountsModel updatedAccount = accountsCrudOperations.performTransaction(account, transaction);
+                AccountsModel updatedAccount = accountsCrudOperations.doTransaction(account, transaction);
+                transactionCrudOperators transactionCrudOperators = new transactionCrudOperators(connection);
+                transactionCrudOperators.save(transaction);
+                List<Transaction> transactionList = transactionCrudOperators.findAll();
+                transaction = transactionList.get(0);
 
                 System.out.println("Compte mis à jour : " + updatedAccount);
 

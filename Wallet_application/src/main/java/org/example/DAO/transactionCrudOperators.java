@@ -60,7 +60,16 @@ public class transactionCrudOperators implements CrudOperations <Transaction>{
 
     @Override
     public Transaction save(Transaction toSave) throws SQLException {
-        return null;
+        String sql = "INSERT INTO Transaction (label, amount, transactionDate, TransactionType,idAccounts) VALUES (?, ?, ?,?,?)" + "ON CONFLICT (label, amount, transactionDate, TransactionType,idAccounts) DO NOTHING;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            preparedStatement.setString(1,toSave.getLabel());
+            preparedStatement.setDouble(2,toSave.getAmount());
+            preparedStatement.setDate(3, Date.valueOf(toSave.getTransactionDate()));
+            preparedStatement.setObject(4,toSave.getTransactionType().name(),Types.OTHER);
+            preparedStatement.setObject(5, toSave.getIdAccounts());
+            preparedStatement.executeUpdate();
+        }
+        return toSave;
     }
 
     @Override
