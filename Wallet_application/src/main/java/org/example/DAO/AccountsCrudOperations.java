@@ -1,6 +1,7 @@
 package org.example.DAO;
 
 import org.example.Model.AccountsModel;
+import org.example.Model.BalanceHistoryEntry;
 import org.example.Model.Transaction;
 import org.example.accountType;
 import org.example.transactionType;
@@ -121,6 +122,29 @@ public class AccountsCrudOperations implements CrudOperations <AccountsModel>{
             }
         }
 
-        return null; // Ou une valeur par défaut, selon votre logique
+        return null;
+    }
+
+    public List<BalanceHistoryEntry> getBalanceHistory(int accountId, LocalDateTime startDateTime, LocalDateTime endDateTime) throws SQLException {
+        List<BalanceHistoryEntry> balanceHistory = new ArrayList<>();
+        String sql = "SELECT lastUpdate, accountsBalance FROM accounts WHERE idAccounts = ? AND lastUpdate >= ? AND lastUpdate <= ? ORDER BY lastUpdate";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, accountId);
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(startDateTime));
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(endDateTime));
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                LocalDateTime updateDateTime = resultSet.getTimestamp("lastUpdate").toLocalDateTime();
+                Double balance = resultSet.getDouble("accountsBalance");
+
+                BalanceHistoryEntry historyEntry = new BalanceHistoryEntry(updateDateTime, balance);
+                balanceHistory.add(historyEntry);
+            }
+        }
+
+        return balanceHistory;
     }
 }
