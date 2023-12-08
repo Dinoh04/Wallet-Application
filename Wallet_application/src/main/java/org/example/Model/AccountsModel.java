@@ -4,6 +4,8 @@ import lombok.*;
 import org.example.accountType;;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @Getter
@@ -17,4 +19,8 @@ public class AccountsModel {
     private LocalDate lastUpdate;
     private  int idCurrency;
     private accountType AccountType;
+
+    private List<Transaction> transactions;
+
+
 }
