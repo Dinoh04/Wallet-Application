@@ -3,8 +3,8 @@ package org.example.DAO;
 import org.example.Model.AccountsModel;
 import org.example.Model.BalanceHistoryEntry;
 import org.example.Model.Transaction;
-import org.example.accountType;
-import org.example.transactionType;
+import org.example.AccountType;
+import org.example.TransactionType;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -32,7 +32,7 @@ public class AccountsCrudOperations implements CrudOperations <AccountsModel>{
                         resultSet.getDouble("accountsBalance"),
                         resultSet.getDate("lastUpdate").toLocalDate(),
                         resultSet.getInt("idCurrency"),
-                        accountType.valueOf(resultSet.getString("AccountType"))
+                        AccountType.valueOf(resultSet.getString("AccountType"))
                 ));
             }
         }
@@ -69,24 +69,6 @@ public class AccountsCrudOperations implements CrudOperations <AccountsModel>{
         }
         return toSave;
     }
-
-    @Override
-    public List<AccountsModel> update(List<AccountsModel> toUpdate) throws SQLException {
-        String sql = "UPDATE accounts SET accountsName = ?, accountsBalance= ? , lastUpdate = ?,idCurrency=?,accountType=?  WHERE idAccounts =?;";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-            for (AccountsModel accountsModel : toUpdate){
-                preparedStatement.setString(1,accountsModel.getAccountsName());
-                preparedStatement.setDouble(2,accountsModel.getAccountsBalance());
-                preparedStatement.setDate(3, Date.valueOf(accountsModel.getLastUpdate()));
-                preparedStatement.setInt(4,accountsModel.getIdCurrency());
-                preparedStatement.setString(5, String.valueOf(accountsModel.getAccountType()));
-                preparedStatement.addBatch();
-            }
-            preparedStatement.executeBatch();
-        }
-        return toUpdate;
-    }
-
     @Override
     public AccountsModel delete(AccountsModel toDelete) throws SQLException {
         return null;
@@ -94,7 +76,7 @@ public class AccountsCrudOperations implements CrudOperations <AccountsModel>{
 
     public AccountsModel doTransaction(AccountsModel account, Transaction transaction) {
         double updatedBalance;
-        if (transaction.getTransactionType() == transactionType.Credit) {
+        if (transaction.getTransactionType() == TransactionType.Credit) {
             updatedBalance = account.getAccountsBalance() + transaction.getAmount();
         } else {
             updatedBalance = account.getAccountsBalance() - transaction.getAmount();

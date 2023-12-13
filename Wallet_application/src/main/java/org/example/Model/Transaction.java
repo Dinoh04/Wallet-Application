@@ -1,7 +1,7 @@
 package org.example.Model;
 
 import lombok.*;
-import org.example.transactionType;
+import org.example.TransactionType;
 
 import java.time.LocalDate;
 
@@ -16,6 +16,6 @@ public class Transaction {
     private String label;
     private Double amount;
     private LocalDate transactionDate;
-    private transactionType TransactionType;
+    private TransactionType transactionType;
     private int idAccounts;
 }
