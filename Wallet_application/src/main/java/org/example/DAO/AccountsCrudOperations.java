@@ -91,7 +91,7 @@ public class AccountsCrudOperations implements CrudOperations <AccountsModel>{
 
     public AccountsModel doTransaction(AccountsModel account, Transaction transaction) {
         double updatedBalance;
-        if (transaction.getTransactionType() == TransactionType.Credit) {
+        if (transaction.getTransactionType() == TransactionType.CREDIT) {
             updatedBalance = account.getAccountsBalance() + transaction.getAmount();
         } else {
             updatedBalance = account.getAccountsBalance() - transaction.getAmount();
