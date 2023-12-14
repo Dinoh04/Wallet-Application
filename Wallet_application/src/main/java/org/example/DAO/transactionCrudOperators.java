@@ -7,10 +7,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class transactionCrudOperators implements CrudOperations<Transaction> {
+public class TransactionCrudOperators implements CrudOperations<Transaction> {
   private Connection connection;
 
-  public transactionCrudOperators(Connection connection) {
+  public TransactionCrudOperators(Connection connection) {
     this.connection = connection;
   }
 
@@ -39,36 +39,49 @@ public class transactionCrudOperators implements CrudOperations<Transaction> {
 
   @Override
   public List<Transaction> saveAll(List<Transaction> toSave) throws SQLException {
-    String sql = "INSERT INTO Transaction (idTransaction, label, amount,transactionDate ,TransactionType, idAccounts) VALUES (?, ?, ?, ?, ?,?) " +
-        "ON CONFLICT (label,amount,transactionDate,transactionType,idAccounts) DO NOTHING";
-    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-      for (Transaction transaction : toSave) {
-        preparedStatement.setInt(1, transaction.getIdTransaction());
-        preparedStatement.setString(2, transaction.getLabel());
-        preparedStatement.setDouble(3, transaction.getAmount());
-        preparedStatement.setDate(4, Date.valueOf(transaction.getTransactionDate()));
-        preparedStatement.setString(5, transaction.getTransactionType().name());
-        preparedStatement.setInt(6, transaction.getIdAccounts());
-
-        preparedStatement.addBatch();
-      }
-      preparedStatement.executeBatch();
+    List<Transaction> savedList = new ArrayList<>();
+    for (Transaction toSaved : toSave) {
+      Transaction savedTransaction = save(toSaved);
+      savedList.add(savedTransaction);
     }
 
-    return toSave;
+    return savedList;
   }
 
   @Override
   public Transaction save(Transaction toSave) throws SQLException {
-    String sql = "INSERT INTO Transaction (label, amount, transactionDate, TransactionType,idAccounts) VALUES (?, ?, ?,?,?)" + "ON CONFLICT (label, amount, transactionDate, TransactionType,idAccounts) DO NOTHING;";
-    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-      preparedStatement.setString(1, toSave.getLabel());
-      preparedStatement.setDouble(2, toSave.getAmount());
-      preparedStatement.setDate(3, Date.valueOf(toSave.getTransactionDate()));
-      preparedStatement.setObject(4, toSave.getTransactionType().name(), Types.OTHER);
-      preparedStatement.setObject(5, toSave.getIdAccounts());
-      preparedStatement.executeUpdate();
+    if (toSave.getIdTransaction() == null) {
+      // If ID is null, do an insert
+      String insertSql = "INSERT INTO Transaction (label, amount, transactionDate, TransactionType, idAccounts) VALUES (?, ?, ?, ?, ?)" +
+          "ON CONFLICT (label, amount, transactionDate, TransactionType, idAccounts) DO NOTHING;";
+      try (PreparedStatement insertStatement = connection.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
+        insertStatement.setString(1, toSave.getLabel());
+        insertStatement.setDouble(2, toSave.getAmount());
+        insertStatement.setDate(3, Date.valueOf(toSave.getTransactionDate()));
+        insertStatement.setObject(4, toSave.getTransactionType(),Types.OTHER);
+        insertStatement.setInt(5, toSave.getIdAccounts());
+        insertStatement.executeUpdate();
+
+        try (ResultSet generatedKeys = insertStatement.getGeneratedKeys()) {
+          if (generatedKeys.next()) {
+            toSave.setIdTransaction(generatedKeys.getInt(1));
+          }
+        }
+      }
+    } else {
+      // if ID is not null, do an update
+      String updateSql = "UPDATE Transaction SET label = ?, amount = ?, transactionDate = ?, TransactionType = ?, idAccounts = ? WHERE idTransaction = ?";
+      try (PreparedStatement updateStatement = connection.prepareStatement(updateSql)) {
+        updateStatement.setString(1, toSave.getLabel());
+        updateStatement.setDouble(2, toSave.getAmount());
+        updateStatement.setDate(3, Date.valueOf(toSave.getTransactionDate()));
+        updateStatement.setObject(4, toSave.getTransactionType(),Types.OTHER);
+        updateStatement.setInt(5, toSave.getIdAccounts());
+        updateStatement.setInt(6, toSave.getIdTransaction());
+        updateStatement.executeUpdate();
+      }
     }
+
     return toSave;
   }
 
