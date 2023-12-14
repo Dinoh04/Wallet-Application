@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 @ToString
 public class AccountsModel {
-  private int idAccounts;
+  private Integer idAccounts;
   private String accountsName;
   private Double accountsBalance;
   private LocalDate lastUpdate;
