@@ -1,0 +1,1 @@
+create type AccountType as ENUM ('BANK','CASH','MOBILE_MONEY');
