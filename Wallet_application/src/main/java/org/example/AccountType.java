@@ -1,7 +1,7 @@
 package org.example;
 
 public enum AccountType {
-  Bank,
-  Cash,
-  Mobile_money
+  BANK,
+  CASH,
+  MOBILE_MONEY
 }
