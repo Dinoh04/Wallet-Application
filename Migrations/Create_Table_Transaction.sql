@@ -16,6 +16,10 @@ create table if not exists Transaction
 (
     idAccounts
 ),
+    idCategory int REFERENCES TransactionCategory
+(
+    idTransactionCategorie
+),
     constraint uniqueTransaction unique
 (
     label,
