@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @ToString
 public class Transaction {
 
-    private int idTransaction;
+    private Integer idTransaction;
     private String label;
     private Double amount;
     private LocalDate transactionDate;
