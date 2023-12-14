@@ -1,0 +1,1 @@
+create TYPE  TransactionType AS ENUM ('DEBIT','CREDIT');

@@ -10,8 +10,8 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 @ToString
 public class TransferHistory {
-    private int id;
-    private int debitTransactionId;
-    private int creditTransactionId;
-    private LocalDate transferDate;
+  private int id;
+  private int debitTransactionId;
+  private int creditTransactionId;
+  private LocalDate transferDate;
 }

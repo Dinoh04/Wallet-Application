@@ -1,17 +1,12 @@
 package org.example;
 
 import org.example.DAO.AccountsCrudOperations;
-import org.example.DAO.transactionCrudOperators;
-import org.example.Model.AccountsModel;
 import org.example.Model.BalanceHistoryEntry;
-import org.example.Model.Transaction;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.List;
 
 
