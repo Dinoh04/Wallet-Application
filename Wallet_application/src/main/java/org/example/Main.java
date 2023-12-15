@@ -33,7 +33,7 @@ public class Main {
                 AccountsModel account2 = new AccountsModel(null,"omega",8000.400,LocalDate.now(),1,AccountType.CASH);
 
 
-                Transaction transaction = new Transaction(null, "Achat de chaussure", 1050.0, LocalDate.now(), TransactionType.DEBIT, 1,1);
+                Transaction transaction = new Transaction(null, "Achat de chaussure", 1050.0, LocalDate.now(), TransactionType.DEBIT, 1);
 
                 AccountsModel updatedAccount = accountsCrudOperations.doTransaction(account, transaction);
                 TransactionCrudOperators transactionCrudOperators = new TransactionCrudOperators(connection);
