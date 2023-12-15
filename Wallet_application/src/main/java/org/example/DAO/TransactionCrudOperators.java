@@ -29,7 +29,8 @@ public class TransactionCrudOperators implements CrudOperations<Transaction> {
             resultSet.getDouble("amount"),
             resultSet.getDate("transactionDate").toLocalDate(),
             TransactionType.valueOf(resultSet.getString("TransactionType")),
-            resultSet.getInt("idAccounts")
+            resultSet.getInt("idAccounts"),
+            resultSet.getInt("idCategory")
         ));
       }
 
@@ -52,7 +53,7 @@ public class TransactionCrudOperators implements CrudOperations<Transaction> {
   public Transaction save(Transaction toSave) throws SQLException {
     if (toSave.getIdTransaction() == null) {
       // If ID is null, do an insert
-      String insertSql = "INSERT INTO Transaction (label, amount, transactionDate, TransactionType, idAccounts) VALUES (?, ?, ?, ?, ?)" +
+      String insertSql = "INSERT INTO Transaction (label, amount, transactionDate, TransactionType, idAccounts,idCategory) VALUES (?, ?, ?, ?, ?,?)" +
           "ON CONFLICT (label, amount, transactionDate, TransactionType, idAccounts) DO NOTHING;";
       try (PreparedStatement insertStatement = connection.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
         insertStatement.setString(1, toSave.getLabel());
@@ -60,6 +61,7 @@ public class TransactionCrudOperators implements CrudOperations<Transaction> {
         insertStatement.setDate(3, Date.valueOf(toSave.getTransactionDate()));
         insertStatement.setObject(4, toSave.getTransactionType(),Types.OTHER);
         insertStatement.setInt(5, toSave.getIdAccounts());
+        insertStatement.setInt(6,toSave.getIdCategory());
         insertStatement.executeUpdate();
 
         try (ResultSet generatedKeys = insertStatement.getGeneratedKeys()) {
@@ -70,14 +72,15 @@ public class TransactionCrudOperators implements CrudOperations<Transaction> {
       }
     } else {
       // if ID is not null, do an update
-      String updateSql = "UPDATE Transaction SET label = ?, amount = ?, transactionDate = ?, TransactionType = ?, idAccounts = ? WHERE idTransaction = ?";
+      String updateSql = "UPDATE Transaction SET label = ?, amount = ?, transactionDate = ?, TransactionType = ?, idAccounts = ?, idCategory = ? WHERE idTransaction = ?";
       try (PreparedStatement updateStatement = connection.prepareStatement(updateSql)) {
         updateStatement.setString(1, toSave.getLabel());
         updateStatement.setDouble(2, toSave.getAmount());
         updateStatement.setDate(3, Date.valueOf(toSave.getTransactionDate()));
         updateStatement.setObject(4, toSave.getTransactionType(),Types.OTHER);
         updateStatement.setInt(5, toSave.getIdAccounts());
-        updateStatement.setInt(6, toSave.getIdTransaction());
+        updateStatement.setInt(6,toSave.getIdCategory());
+        updateStatement.setInt(7, toSave.getIdTransaction());
         updateStatement.executeUpdate();
       }
     }

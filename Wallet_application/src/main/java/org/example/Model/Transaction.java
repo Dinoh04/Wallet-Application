@@ -18,4 +18,5 @@ public class Transaction {
     private LocalDate transactionDate;
     private TransactionType transactionType;
     private int idAccounts;
+    private int idCategory;
 }
