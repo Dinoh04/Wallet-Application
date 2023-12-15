@@ -1,6 +1,7 @@
 package org.example.DAO;
 
 import org.example.Model.Transaction;
+import org.example.Model.TransactionSummary;
 import org.example.TransactionType;
 
 import java.sql.*;
@@ -94,5 +95,32 @@ public class TransactionCrudOperators implements CrudOperations<Transaction> {
       preparedStatement.executeUpdate();
     }
     return toDelete;
+  }
+  public List<TransactionSummary> getCategoryTransactionsSum(int accountId, Timestamp startDate, Timestamp endDate) throws SQLException {
+    List<TransactionSummary> transactionSummaries = new ArrayList<>();
+
+    String sql = "SELECT category, COALESCE(SUM(CASE WHEN t.amount IS NOT NULL THEN t.amount ELSE 0 END), 0) AS totalAmount " +
+            "FROM category c " +
+            "LEFT JOIN transaction t ON c.idCategory = t.idCategory AND t.idAccounts = ? " +
+            "AND t.transactionDate BETWEEN ? AND ? " +
+            "GROUP BY c.category";
+
+    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+      preparedStatement.setInt(1, accountId);
+      preparedStatement.setTimestamp(2, startDate);
+      preparedStatement.setTimestamp(3, endDate);
+
+      try (ResultSet resultSet = preparedStatement.executeQuery()) {
+        while (resultSet.next()) {
+          String category = resultSet.getString("category");
+          double totalAmount = resultSet.getDouble("totalAmount");
+
+          TransactionSummary transactionSummary = new TransactionSummary(category, totalAmount);
+          transactionSummaries.add(transactionSummary);
+        }
+      }
+    }
+
+    return transactionSummaries;
   }
 }
