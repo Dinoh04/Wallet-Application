@@ -3,15 +3,20 @@ CREATE OR REPLACE FUNCTION get_sum_by_category(
   "from" TIMESTAMP,
   "to" TIMESTAMP
 )
-RETURNS TABLE(restaurant DOUBLE PRECISION, salaire DOUBLE PRECISION)
+RETURNS TABLE (categoryname varchar, total_amount numeric)
 AS $$
 BEGIN
-RETURN QUERY SELECT
-        COALESCE(SUM(CASE WHEN "categoryname" = 'Restaurant' THEN "amount" ELSE 0 END), 0) AS restaurant,
-        COALESCE(SUM(CASE WHEN "categoryname" = 'Salaire' THEN "amount" ELSE 0 END), 0) AS salaire
-    FROM "transaction"
-    LEFT JOIN "transactioncategory" ON "transaction"."idcategory" = "transactioncategory"."idcategory"
-    WHERE "idaccounts" = accountid AND "transactiondate" BETWEEN "from" AND "to";
+RETURN QUERY
+SELECT
+    c.categoryname AS categoryname,
+    COALESCE(SUM(CASE WHEN t.transactiontype = 'CREDIT' THEN t.amount ELSE -t.amount END)::numeric, 0) AS total_amount
+FROM
+    transactioncategory c
+        LEFT JOIN
+    transaction t ON c.idtransactioncategorie = t.idcategory AND t.idaccounts = idaccounts
+        AND t.transactiondate BETWEEN "from" AND "to"
+GROUP BY
+    c.categoryname;
 END;
 $$ LANGUAGE plpgsql;
 
