@@ -6,3 +6,5 @@ INSERT INTO Accounts (accountsName, accountsBalance, lastUpdate, idCurrency, acc
 
 -- Transaction table insert
 INSERT INTO Transaction (label, amount, transactionDate, transactionType, idAccounts) VALUES ('Expense 1', 50.25, CURRENT_TIMESTAMP, 'DEBIT', 1),('Recipe 1', 100.50, CURRENT_TIMESTAMP, 'CREDIT', 2),('Expense 2', 30.75, CURRENT_TIMESTAMP, 'DEBIT', 3),('Recipe 2', 75.00, CURRENT_TIMESTAMP, 'CREDIT', 1) ON CONFLICT (label,amount,transactionDate,transactionType,idAccounts) DO NOTHING;
+
+--
