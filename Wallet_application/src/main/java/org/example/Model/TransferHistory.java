@@ -2,6 +2,7 @@ package org.example.Model;
 
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @AllArgsConstructor
@@ -13,5 +14,5 @@ public class TransferHistory {
   private int id;
   private int debitTransactionId;
   private int creditTransactionId;
-  private LocalDate transferDate;
+  private Timestamp transferDate;
 }
