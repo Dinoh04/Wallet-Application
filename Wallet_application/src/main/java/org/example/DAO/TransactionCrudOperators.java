@@ -6,7 +6,9 @@ import org.example.TransactionType;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TransactionCrudOperators implements CrudOperations<Transaction> {
   private Connection connection;
@@ -122,6 +124,34 @@ public class TransactionCrudOperators implements CrudOperations<Transaction> {
           transactionSummaries.add(transactionSummary);
         }
       }
+    }
+
+    return transactionSummaries;
+  }
+  private List<TransactionSummary> processTransactions(List<Transaction> transactions) {
+   
+    Map<String, Double> categorySums = new HashMap<>();
+
+    for (Transaction transaction : transactions) {
+      String category = transaction.getLabel();
+      double amount = transaction.getAmount();
+
+
+      categorySums.put(category, categorySums.getOrDefault(category, 0.0) + amount);
+    }
+
+
+    List<TransactionSummary> transactionSummaries = convertToTransactionSummaries(categorySums);
+
+    return transactionSummaries;
+  }
+
+  private List<TransactionSummary> convertToTransactionSummaries(Map<String, Double> categorySums) {
+    List<TransactionSummary> transactionSummaries = new ArrayList<>();
+
+    for (Map.Entry<String, Double> entry : categorySums.entrySet()) {
+      TransactionSummary summary = new TransactionSummary(entry.getKey(), entry.getValue());
+      transactionSummaries.add(summary);
     }
 
     return transactionSummaries;
